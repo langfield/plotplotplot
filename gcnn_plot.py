@@ -199,8 +199,10 @@ def main():
         
     # filename = sys.argv[1]
     filename = 'prelimSkipSlimGrowing.log'
+    filename_no_extension = filename.split('.')[0]
     dfs, ylabels, column_counts = plot_preproc.read_log(filename, 'train')
     graph(dfs, ylabels, filename, column_counts)
+    print("Graph saved to:", filename_no_extension + ".svg") 
 
 if __name__ == '__main__':
     main()
