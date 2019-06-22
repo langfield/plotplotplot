@@ -125,8 +125,6 @@ def create_subplot(**kwargs):
 
     MARKERS=['.',',','o','v','s','p','P','H','+','x','X','D','d','|','_','<','>','^','8','*','h','1','2','3','4']
     
-    
-
     # distinct line colors/styles for many lines
     #LINE_STYLES = ['solid', 'dashed', 'dashdot', 'dotted']
     LINE_STYLES = ['solid']
@@ -185,6 +183,9 @@ def create_subplot(**kwargs):
                   color = 'black', 
                   linewidth = 1.3, 
                   alpha = xaxis_opacity)
+
+    # Set color of subplots. 
+    ax.set_facecolor('grey')
     
     return graph, color_index
     
