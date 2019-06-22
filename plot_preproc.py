@@ -74,11 +74,7 @@ def read_log(filename, phase):
             column_counts.append(2)
         elif key != 'top5':
             column_counts.append(1)
-        print(key)
-        print(column_counts)
         i += 1
-
-    print(column_counts)
 
     """
     # Handle distribution of columns in subplots.
