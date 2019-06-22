@@ -6,6 +6,7 @@ import sys
 import csv
 import math
 import pprint
+import argparse
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -19,7 +20,7 @@ import numpy as np
 import plot_preproc
 
 
-def graph(dfs, ylabels, filename, column_counts):
+def graph(dfs, ylabels, filename, column_counts, phase):
     
     filename_no_extension = filename.split('.')[0]
 
@@ -193,16 +194,19 @@ def graph(dfs, ylabels, filename, column_counts):
     plt.subplots_adjust(right=right)
 
     # save to .svg
-    plt.savefig(filename_no_extension + ".svg", dpi=300)
+    plt.savefig(filename_no_extension + "_" + phase + ".svg", dpi=300)
    
 def main():
+    
+    parser = argparse.ArgumentParser(description='Growing CNNs with PyTorch')
+    parser.add_argument('filename', type=str, help='Json log file to parse and graph.')
+    parser.add_argument('phase', type=str, help='The section to graph. One of \'train\', \'validate\', \'test\'.') 
+    args = parser.parse_args()
         
-    # filename = sys.argv[1]
-    filename = 'prelimSkipSlimGrowing.log'
-    filename_no_extension = filename.split('.')[0]
-    dfs, ylabels, column_counts = plot_preproc.read_log(filename, 'train')
-    graph(dfs, ylabels, filename, column_counts)
-    print("Graph saved to:", filename_no_extension + ".svg") 
+    filename_no_extension = args.filename.split('.')[0]
+    dfs, ylabels, column_counts = plot_preproc.read_log(args.filename, args.phase)
+    graph(dfs, ylabels, args.filename, column_counts, args.phase)
+    print("Graph saved to:", filename_no_extension + "_" + args.phase + ".svg") 
 
 if __name__ == '__main__':
     main()
