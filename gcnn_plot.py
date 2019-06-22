@@ -43,7 +43,7 @@ def graph(dfs, ylabels, filename, column_counts, phase):
 
     # Text. 
     title_text =  filename
-    subtitle_text = "train"
+    subtitle_text = phase
     xlabel = ""
     banner_text = "©craw"
 
@@ -196,17 +196,17 @@ def graph(dfs, ylabels, filename, column_counts, phase):
     # save to .svg
     plt.savefig(filename_no_extension + "_" + phase + ".svg", dpi=300)
    
-def main():
-    
-    parser = argparse.ArgumentParser(description='Growing CNNs with PyTorch')
-    parser.add_argument('filename', type=str, help='Json log file to parse and graph.')
-    parser.add_argument('phase', type=str, help='The section to graph. One of \'train\', \'validate\', \'test\'.') 
-    args = parser.parse_args()
-        
+def main(args):
+ 
     filename_no_extension = args.filename.split('.')[0]
     dfs, ylabels, column_counts = plot_preproc.read_log(args.filename, args.phase)
     graph(dfs, ylabels, args.filename, column_counts, args.phase)
     print("Graph saved to:", filename_no_extension + "_" + args.phase + ".svg") 
 
 if __name__ == '__main__':
-    main()
+    
+    parser = argparse.ArgumentParser(description='Growing CNNs with PyTorch')
+    parser.add_argument('filename', type=str, help='Json log file to parse and graph.')
+    parser.add_argument('phase', type=str, help='The section to graph. One of \'train\', \'validate\', \'test\'.') 
+    args = parser.parse_args()
+    main(args)
