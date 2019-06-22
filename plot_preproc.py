@@ -185,7 +185,7 @@ def create_subplot(**kwargs):
                   alpha = xaxis_opacity)
 
     # Set color of subplots. 
-    ax.set_facecolor('grey')
+    ax.set_facecolor('#F0F0F0')
     
     return graph, color_index
     
