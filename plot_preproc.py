@@ -63,9 +63,10 @@ def read_log(filename, phase):
         print("Columns:", keys)
 
         log_df = pd.DataFrame(log_list)
-        log_df.columns = keys
+        keys = list(log_df.columns)
         log_df['index'] = log_df.index
         log_df['index'] = log_df['index'].apply(lambda x: x*10)
+        
 
     dfs = []
 
