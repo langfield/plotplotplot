@@ -43,15 +43,12 @@ def read_log(filename, phase):
         phase_key = phase + "Results"
 
         row_list = []
-        keys = []
         log_list = json_data[phase_key]
 
         # Construct train array. 
         for i, stepdict in enumerate(log_list):
             row = []
             for key, val in stepdict.items():
-                if i == 0:
-                    keys.append(key)
                 if isint(val):
                     row.append(int(val))
                 elif isfloat(val):
@@ -60,16 +57,30 @@ def read_log(filename, phase):
                     row.append(val)
             row_list.append(row) 
 
-        print("Columns:", keys)
-
         log_df = pd.DataFrame(log_list)
         keys = list(log_df.columns)
         log_df['index'] = log_df.index
         log_df['index'] = log_df['index'].apply(lambda x: x*10)
-        
-
+       
     dfs = []
 
+    # This column_counts generation process assumes 
+    # `top5` always follows `top1` in keys. 
+    column_counts = []
+    i = 0
+    for i in range(len(keys)):
+        key = keys[i]
+        if key == 'top1':
+            column_counts.append(2)
+        elif key != 'top5':
+            column_counts.append(1)
+        print(key)
+        print(column_counts)
+        i += 1
+
+    print(column_counts)
+
+    """
     # Handle distribution of columns in subplots.
     if phase == 'train': 
         column_counts = [1,1,1,1,2,1]
@@ -85,6 +96,7 @@ def read_log(filename, phase):
     except AssertionError:
         column_counts = [1,1,2]
         assert sum(column_counts) == len(keys) 
+    """
 
     # Iterate over column split, and create a seperate DataFrame for 
     # each subplot. Add the subplot names to `ylabels`. 
