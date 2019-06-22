@@ -2,7 +2,12 @@ import json
 
 import numpy as np
 import pandas as pd
+
+import matplotlib
 import matplotlib.pyplot as plt
+import matplotlib.style as style
+import matplotlib.font_manager as fm
+import matplotlib.transforms as transforms
 
 #DATA PREPROCESSING
 
@@ -13,7 +18,7 @@ def read_log(filename, phase):
     
     rows = []
     filename_no_extension = filename.split('.')[0]
-    print(filename_no_extension)
+    print("Reading from file:", filename)
 
     def isfloat(x):
         try:
@@ -55,7 +60,7 @@ def read_log(filename, phase):
                     row.append(val)
             row_list.append(row) 
 
-        print(keys)
+        print("Columns:", keys)
 
         log_df = pd.DataFrame(log_list)
         log_df.columns = keys
@@ -85,8 +90,7 @@ def read_log(filename, phase):
                 key_list.append(keys[i + j])
             ylabels.append("".join(words[:-1]))
             dfs.append(log_df[key_list])
-    print(ylabels)
-    print(len(dfs))
+    print("Generating", len(dfs), "subplots.")
     
     return dfs, ylabels, column_counts
 
@@ -186,8 +190,5 @@ def create_subplot(**kwargs):
 
     # Set color of subplots. 
     ax.set_facecolor('#F0F0F0')
-    
+     
     return graph, color_index
-    
-# filename = 'prelimSkipSlimGrowing.log'
-# dfs, ylabels = read_log(filename, 'train')
