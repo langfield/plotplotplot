@@ -69,8 +69,21 @@ def read_log(filename, phase):
 
     dfs = []
 
-    # Handle distribution of columns in subplots. 
-    column_counts = [1,1,1,1,2,1]
+    # Handle distribution of columns in subplots.
+    if phase == 'train': 
+        column_counts = [1,1,1,1,2,1]
+        try: 
+            assert sum(column_counts) == len(keys)
+        except AssertionError:
+            column_counts = [1,1,1,1,2]
+            assert sum(column_counts) == len(keys) 
+    else:
+        column_counts = [1,1,2,1]
+    try: 
+        assert sum(column_counts) == len(keys)
+    except AssertionError:
+        column_counts = [1,1,2]
+        assert sum(column_counts) == len(keys) 
 
     # Iterate over column split, and create a seperate DataFrame for 
     # each subplot. Add the subplot names to `ylabels`. 
