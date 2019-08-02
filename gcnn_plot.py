@@ -1,5 +1,3 @@
-# Imports. 
-
 import io
 import os
 import sys
@@ -17,7 +15,7 @@ import matplotlib.transforms as transforms
 import pandas as pd
 import numpy as np
 
-import plot_preproc
+import preprocessing
 
 
 def graph(dfs, ylabels, filename, column_counts, phase):
@@ -26,9 +24,8 @@ def graph(dfs, ylabels, filename, column_counts, phase):
 
     # PLOTTING
 
-    #================================================
-    # PARAMETERS
-    #================================================
+    #=================PARAMS=================
+    #=================vvvvvv=================
 
     # Size of ENTIRE PLOT. 
     plot_height = 20 # 7.25
@@ -45,7 +42,7 @@ def graph(dfs, ylabels, filename, column_counts, phase):
     title_text =  filename
     subtitle_text = phase
     xlabel = ""
-    banner_text = "©craw"
+    banner_text = "©spred"
 
     # Set edges of plot in figure (padding). 
     top = 0.90
@@ -77,14 +74,16 @@ def graph(dfs, ylabels, filename, column_counts, phase):
     prop3 = fm.FontProperties(fname='Apercu.ttf')
     prop4 = fm.FontProperties(fname='Apercu.ttf', size=legend_size)
 
-    #ticks_font = matplotlib.font_manager.FontProperties(family='DecimaMonoPro', style='normal', size=12, weight='normal', stretch='normal')
-
-    #================================================
-    # END OF PARAMETERS
-    #================================================
+    """
+    ticks_font = matplotlib.font_manager.FontProperties(family='DecimaMonoPro', 
+                                                        style='normal', 
+                                                        size=12, 
+                                                        weight='normal', 
+                                                        stretch='normal')
+    """
+    #=================^^^^^^=================
+    #=================PARAMS=================
     
-    # =========================================================
-
     # figure initialization
     fig, axlist = plt.subplots(figsize=(plot_width, plot_height),nrows=len(dfs))
     color_index = 0
@@ -96,25 +95,24 @@ def graph(dfs, ylabels, filename, column_counts, phase):
         plt.sca(ax)
         style.use('fivethirtyeight')
         column_total += column_counts[i]
-        graph, color_index = plot_preproc.create_subplot(
-                                                            ax=ax, 
-                                                            xaxis=xaxis, 
-                                                            yaxis=yaxis, 
-                                                            df=df, 
-                                                            ylabel=ylabels[i], 
-                                                            column_total=column_total, 
-                                                            color_index=color_index, 
-                                                            NUM_COLORS=NUM_COLORS,
-                                                            xlabel=xlabel,
-                                                            y_axis_label_size=y_axis_label_size,
-                                                            x_axis_label_size=x_axis_label_size,
-                                                            legend_size=legend_size, 
-                                                            tick_label_size=tick_label_size,
-                                                            axis_font=prop3,
-                                                            legend_font=prop4,
-                                                            text_opacity=text_opacity,
-                                                            xaxis_opacity=xaxis_opacity,
-                                                        )
+        graph, color_index = preprocessing.create_subplot(
+                                                          ax=ax, 
+                                                          xaxis=xaxis, 
+                                                          yaxis=yaxis, 
+                                                          df=df, 
+                                                          ylabel=ylabels[i], 
+                                                          column_total=column_total, 
+                                                          color_index=color_index, 
+                                                          NUM_COLORS=NUM_COLORS,
+                                                          xlabel=xlabel,
+                                                          y_axis_label_size=y_axis_label_size,
+                                                          x_axis_label_size=x_axis_label_size,
+                                                          legend_size=legend_size, 
+                                                          tick_label_size=tick_label_size,
+                                                          axis_font=prop3,
+                                                          legend_font=prop4,
+                                                          text_opacity=text_opacity,
+                                                          xaxis_opacity=xaxis_opacity)
 
 
 
@@ -199,7 +197,7 @@ def graph(dfs, ylabels, filename, column_counts, phase):
 def main(args):
  
     filename_no_extension = args.filename.split('.')[0]
-    dfs, ylabels, column_counts = plot_preproc.read_log(args.filename, args.phase)
+    dfs, ylabels, column_counts = preprocessing.read_log(args.filename, args.phase)
     graph(dfs, ylabels, args.filename, column_counts, args.phase)
     print("Graph saved to:", filename_no_extension + "_" + args.phase + ".svg") 
 
