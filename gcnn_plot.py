@@ -18,10 +18,8 @@ import numpy as np
 import preprocessing
 
 
-def graph(dfs, ylabels, filename, column_counts, phase):
+def graph(dfs, ylabels, filename, column_counts, phase, save_path):
     
-    filename_no_extension = filename.split('.')[0]
-
     # PLOTTING
 
     #=================PARAMS=================
@@ -69,10 +67,10 @@ def graph(dfs, ylabels, filename, column_counts, phase):
     banner_text_size = 14
 
     # Import font. 
-    prop = fm.FontProperties(fname='DecimaMonoPro.ttf')
-    prop2 = fm.FontProperties(fname='apercu_medium_pro.otf')
-    prop3 = fm.FontProperties(fname='Apercu.ttf')
-    prop4 = fm.FontProperties(fname='Apercu.ttf', size=legend_size)
+    prop = fm.FontProperties(fname='fonts/DecimaMonoPro.ttf')
+    prop2 = fm.FontProperties(fname='fonts/apercu_medium_pro.otf')
+    prop3 = fm.FontProperties(fname='fonts/Apercu.ttf')
+    prop4 = fm.FontProperties(fname='fonts/Apercu.ttf', size=legend_size)
 
     """
     ticks_font = matplotlib.font_manager.FontProperties(family='DecimaMonoPro', 
@@ -192,19 +190,22 @@ def graph(dfs, ylabels, filename, column_counts, phase):
     plt.subplots_adjust(right=right)
 
     # save to .svg
-    plt.savefig(filename_no_extension + "_" + phase + ".svg", dpi=300)
+    plt.savefig(save_path)
    
 def main(args):
- 
-    filename_no_extension = args.filename.split('.')[0]
-    dfs, ylabels, column_counts = preprocessing.read_log(args.filename, args.phase)
-    graph(dfs, ylabels, args.filename, column_counts, args.phase)
-    print("Graph saved to:", filename_no_extension + "_" + args.phase + ".svg") 
+    GRAPHS_PATH = 'graphs/'
+    assert os.path.isdir(GRAPHS_PATH)
+    filename = os.path.basename(args.filepath)
+    filename_no_ext = filename.split('.')[0]
+    save_path = os.path.join(GRAPHS_PATH, filename_no_ext + "_" + args.phase + ".svg")
+    dfs, ylabels, column_counts = preprocessing.read_log(args.filepath, args.phase)
+    graph(dfs, ylabels, filename_no_ext, column_counts, args.phase, save_path)
+    print("Graph saved to:", save_path) 
 
 if __name__ == '__main__':
-    
+    # TODO: Add an `overwrite` argument which defaults to `True`.  
     parser = argparse.ArgumentParser(description='Growing CNNs with PyTorch')
-    parser.add_argument('filename', type=str, help='Json log file to parse and graph.')
+    parser.add_argument('filepath', type=str, help='Json log file to parse and graph.')
     parser.add_argument('phase', type=str, help='The section to graph. One of \'train\', \'validate\', \'test\'.') 
     args = parser.parse_args()
     main(args)
