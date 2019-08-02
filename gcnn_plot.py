@@ -16,6 +16,7 @@ import pandas as pd
 import numpy as np
 
 import preprocessing
+import subplot
 
 
 def graph(dfs, ylabels, filename, column_counts, phase, save_path):
@@ -93,24 +94,24 @@ def graph(dfs, ylabels, filename, column_counts, phase, save_path):
         plt.sca(ax)
         style.use('fivethirtyeight')
         column_total += column_counts[i]
-        graph, color_index = preprocessing.create_subplot(
-                                                          ax=ax, 
-                                                          xaxis=xaxis, 
-                                                          yaxis=yaxis, 
-                                                          df=df, 
-                                                          ylabel=ylabels[i], 
-                                                          column_total=column_total, 
-                                                          color_index=color_index, 
-                                                          NUM_COLORS=NUM_COLORS,
-                                                          xlabel=xlabel,
-                                                          y_axis_label_size=y_axis_label_size,
-                                                          x_axis_label_size=x_axis_label_size,
-                                                          legend_size=legend_size, 
-                                                          tick_label_size=tick_label_size,
-                                                          axis_font=prop3,
-                                                          legend_font=prop4,
-                                                          text_opacity=text_opacity,
-                                                          xaxis_opacity=xaxis_opacity)
+        graph, color_index = subplot.create_subplot(
+                                                    ax=ax, 
+                                                    xaxis=xaxis, 
+                                                    yaxis=yaxis, 
+                                                    df=df, 
+                                                    ylabel=ylabels[i], 
+                                                    column_total=column_total, 
+                                                    color_index=color_index, 
+                                                    NUM_COLORS=NUM_COLORS,
+                                                    xlabel=xlabel,
+                                                    y_axis_label_size=y_axis_label_size,
+                                                    x_axis_label_size=x_axis_label_size,
+                                                    legend_size=legend_size, 
+                                                    tick_label_size=tick_label_size,
+                                                    axis_font=prop3,
+                                                    legend_font=prop4,
+                                                    text_opacity=text_opacity,
+                                                    xaxis_opacity=xaxis_opacity)
 
 
 
