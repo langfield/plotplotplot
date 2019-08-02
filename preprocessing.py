@@ -3,12 +3,6 @@ import json
 import numpy as np
 import pandas as pd
 
-import matplotlib
-import matplotlib.pyplot as plt
-import matplotlib.style as style
-import matplotlib.font_manager as fm
-import matplotlib.transforms as transforms
-
 #DATA PREPROCESSING
 
 def read_csv(file_path, phase):
