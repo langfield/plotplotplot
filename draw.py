@@ -52,8 +52,8 @@ def graph(dfs, ylabels, filename, column_counts, phase, save_path):
 
     # Title sizes. 
     title_pad_x = 0     # + is left, - is right
-    title_pos_y = 0.95
-    subtitle_pos_y = 0.92
+    title_pos_y = 0.90
+    subtitle_pos_y = 0.89
     title_fontsize = 30
     subtitle_fontsize = 14
 
