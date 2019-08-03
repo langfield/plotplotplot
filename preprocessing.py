@@ -5,24 +5,20 @@ import pandas as pd
 
 #DATA PREPROCESSING
 
-def read_csv(file_path, phase):
+def read_csv(file_path):
  
     print("Reading from file:", file_path)
 
-    raw_series = pd.read_csv(file_path)
-     
+    df = pd.read_csv(file_path)
+    print(df)
+    keys = list(df.columns)
     dfs = []
 
-    # This column_counts generation process assumes 
-    # `top5` always follows `top1` in keys. 
     column_counts = []
     i = 0
     for i in range(len(keys)):
         key = keys[i]
-        if key == 'top1':
-            column_counts.append(2)
-        elif key != 'top5':
-            column_counts.append(1)
+        column_counts.append(1)
         i += 1
 
     # Iterate over column split, and create a seperate DataFrame for 
@@ -30,11 +26,11 @@ def read_csv(file_path, phase):
     ylabel = ""
     ylabels = []
     for i,count in enumerate(column_counts):
-        key_list = ['index']
+        key_list = []
         if count == 1:
             ylabels.append(keys[i])
             key_list.append(keys[i])
-            dfs.append(log_df[key_list])
+            dfs.append(df[key_list])
         else:
             words = []
             for j in range(count):
@@ -42,12 +38,12 @@ def read_csv(file_path, phase):
                 words.append("/")
                 key_list.append(keys[i + j])
             ylabels.append("".join(words[:-1]))
-            dfs.append(log_df[key_list])
+            dfs.append(df[key_list])
     print("Generating", len(dfs), "subplots.")
     
     return dfs, ylabels, column_counts
 
-def read_log(file_path, phase):
+def read_json(file_path, phase):
 
     phases = ['train', 'validate', 'test']
     assert phase in phases
@@ -130,4 +126,3 @@ def read_log(file_path, phase):
     print("Generating", len(dfs), "subplots.")
     
     return dfs, ylabels, column_counts
-
