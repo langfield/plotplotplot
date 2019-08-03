@@ -27,8 +27,8 @@ def graph(dfs, ylabels, filename, column_counts, phase, save_path):
     #=================vvvvvv=================
 
     # Size of ENTIRE PLOT. 
-    plot_height = 20 # 7.25
-    plot_width = 20
+    plot_height = 7 # 7.25
+    plot_width = 9
     num_empty_ticks = 0
 
     # x-axis.
@@ -136,7 +136,7 @@ def graph(dfs, ylabels, filename, column_counts, phase, save_path):
 
     # banner text
     banner = plt.annotate(banner_text, 
-             xy=(0.02, banner_y*0.8), 
+             xy=(0.01, banner_y*0.8), 
              xycoords=xfig_trans,
              fontsize = banner_text_size, 
              color = '#FFFFFF', 
