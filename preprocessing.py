@@ -10,7 +10,6 @@ def read_csv(file_path):
     print("Reading from file:", file_path)
 
     df = pd.read_csv(file_path)
-    print(df)
     keys = list(df.columns)
     dfs = []
 

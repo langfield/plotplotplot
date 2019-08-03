@@ -25,7 +25,6 @@ def create_subplot(**kwargs):
     xaxis_opacity = kwargs['xaxis_opacity']
     
     #===PLOT===
-    print(df)
     graph = df.plot(x=xaxis, 
                     y=yaxis,
                     ax=ax, 
