@@ -45,8 +45,8 @@ def graph(dfs, ylabels, filename, column_counts, phase, save_path):
     banner_text = "©spred"
 
     # Set edges of plot in figure (padding). 
-    top = 0.90
-    bottom = 0.1 #0.18 -- old
+    top = 0.85
+    bottom = 0.18 #0.18 -- old
     left = 0.08 # 0.1 -- old
     right = 0.96
 
@@ -54,7 +54,7 @@ def graph(dfs, ylabels, filename, column_counts, phase, save_path):
     title_pad_x = 0     # + is left, - is right
     title_pos_y = 0.95
     subtitle_pos_y = 0.92
-    title_fontsize = 50
+    title_fontsize = 30
     subtitle_fontsize = 30
 
     # Opacity.
