@@ -41,7 +41,7 @@ def graph(dfs, ylabels, filename, column_counts, phase, save_path):
     # Text. 
     title_text =  filename
     subtitle_text = phase
-    xlabel = ""
+    xlabel = "x"
     banner_text = "©spred"
 
     # Set edges of plot in figure (padding). 
@@ -55,7 +55,7 @@ def graph(dfs, ylabels, filename, column_counts, phase, save_path):
     title_pos_y = 0.95
     subtitle_pos_y = 0.92
     title_fontsize = 30
-    subtitle_fontsize = 30
+    subtitle_fontsize = 14
 
     # Opacity.
     text_opacity = 0.75
@@ -65,7 +65,7 @@ def graph(dfs, ylabels, filename, column_counts, phase, save_path):
     tick_label_size = 14
     legend_size = 14
     y_axis_label_size = 14
-    x_axis_label_size = 24
+    x_axis_label_size = 14
     banner_text_size = 14
 
     # Import font. 
@@ -118,11 +118,10 @@ def graph(dfs, ylabels, filename, column_counts, phase, save_path):
 
 
 
-    xlabel = "Iterations"
     # add axis labels  
     plt.xlabel(xlabel, 
                fontproperties=prop3, 
-               fontsize = 24, 
+               fontsize = x_axis_label_size, 
                alpha=text_opacity)
 
     # =========================================================
