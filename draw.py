@@ -47,8 +47,8 @@ def graph(dfs, ylabels, filename, column_counts, phase, save_path):
     # Set edges of plot in figure (padding). 
     top = 0.85
     bottom = 0.18 #0.18 -- old
-    left = 0.08 # 0.1 -- old
-    right = 0.96
+    left = 0.12 # 0.1 -- old
+    right = 0.94
 
     # Title sizes. 
     title_pad_x = 0     # + is left, - is right
