@@ -33,6 +33,7 @@ def graph(dfs, ylabels, filename, column_counts, phase, save_path):
 
     # x-axis.
     xaxis = 'index'
+    xaxis = None
 
     # y-axis.
     yaxis = None
@@ -85,6 +86,8 @@ def graph(dfs, ylabels, filename, column_counts, phase, save_path):
     
     # figure initialization
     fig, axlist = plt.subplots(figsize=(plot_width, plot_height),nrows=len(dfs))
+    if len(dfs) == 1:
+        axlist = [axlist]
     color_index = 0
     column_total = 0
     NUM_COLORS = sum(column_counts)
@@ -198,15 +201,24 @@ def main(args):
     assert os.path.isdir(GRAPHS_PATH)
     filename = os.path.basename(args.filepath)
     filename_no_ext = filename.split('.')[0]
-    save_path = os.path.join(GRAPHS_PATH, filename_no_ext + "_" + args.phase + ".svg")
-    dfs, ylabels, column_counts = preprocessing.read_log(args.filepath, args.phase)
+    if args.phase != "":
+        save_path = os.path.join(GRAPHS_PATH, filename_no_ext + "_" + args.phase + ".svg")
+    else:
+        save_path = os.path.join(GRAPHS_PATH, filename_no_ext + ".svg")
+    if args.format == 'csv':
+        dfs, ylabels, column_counts = preprocessing.read_csv(args.filepath)
+    elif args.format == 'json':
+        dfs, ylabels, column_counts = preprocessing.read_json(args.filepath, args.phase)
+    else:
+        raise ValueError("Invalid --format format.")
     graph(dfs, ylabels, filename_no_ext, column_counts, args.phase, save_path)
     print("Graph saved to:", save_path) 
 
 if __name__ == '__main__':
-    # TODO: Add an `overwrite` argument which defaults to `True`.  
-    parser = argparse.ArgumentParser(description='Growing CNNs with PyTorch')
-    parser.add_argument('filepath', type=str, help='Json log file to parse and graph.')
-    parser.add_argument('phase', type=str, help='The section to graph. One of \'train\', \'validate\', \'test\'.') 
+    # TODO: Add an `overwrite` argument which defaults to `True`.
+    parser = argparse.ArgumentParser(description='Matplotlib 538-style plot generator.')
+    parser.add_argument('--filepath', type=str, help='File to parse and graph.', required=True)
+    parser.add_argument('--format', type=str, default='csv', help='`csv` or `json`.')
+    parser.add_argument('--phase', type=str, default='', help='The section to graph. One of \'train\', \'validate\', \'test\'.') 
     args = parser.parse_args()
     main(args)
