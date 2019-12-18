@@ -1,6 +1,7 @@
 """ Generate a single subplot. """
 from typing import List, Tuple, Optional
 import pandas as pd  # type: ignore
+import matplotlib.axes as ax # type: ignore
 import matplotlib.pyplot as plt  # type: ignore
 
 # pylint: disable=bad-continuation, too-many-locals, too-many-arguments
@@ -27,10 +28,10 @@ def create_subplot(
     x_axis_opacity: float,
     line_styles: List[str],
     markers: List[str],
-) -> Tuple[plt.axes.Axes, int]:
+) -> Tuple[ax.Axes, int]:
     """ Creates a graph and returns it along with a color index. """
 
-    graph: plt.axes.Axes = df.plot(x=x_axis, y=y_axis, ax=axes, use_index=True)
+    graph: ax.Axes = df.plot(x=x_axis, y=y_axis, ax=axes, use_index=True)
     plt.legend(loc="best")
 
     # Hacks to make axes limits visible.
