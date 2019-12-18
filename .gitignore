@@ -2,3 +2,4 @@ __pycache__/
 *.swp
 *.svg
 .mypy_cache/
+.ipynb_checkpoints/
