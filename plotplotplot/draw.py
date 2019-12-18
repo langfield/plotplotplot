@@ -228,6 +228,7 @@ def graph(
 
     # Save to ``.svg``.
     plt.savefig(save_path)
+    print("Plot saved to '%s'" % save_path)
 
 
 def main(args):
