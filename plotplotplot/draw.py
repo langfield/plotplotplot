@@ -1,63 +1,96 @@
+""" General matplotlib utility for drawing line plots from dataframes. """
 import os
 import math
+import json
 import argparse
+from typing import List, Dict, Any, Optional
 
-import matplotlib.pyplot as plt
-import matplotlib.style as style
-import matplotlib.font_manager as fm
-import matplotlib.transforms as transforms
+import pandas as pd # type: ignore
+import matplotlib.pyplot as plt # type: ignore
+import matplotlib.style as style # type: ignore
+import matplotlib.font_manager as fm # type: ignore
+import matplotlib.transforms as transforms # type: ignore
 
 from plotplotplot import preprocessing, subplot
 
+# pylint: disable=bad-continuation, too-many-locals, too-many-statements
 
-def graph(dfs, ylabels, filename, column_counts, save_path):
+GRAPHS_PATH = "graphs/"
+SETTINGS_PATH = "settings/settings.json"
+
+
+def graph(
+    dfs: List[pd.DataFrame],
+    y_labels: List[str],
+    column_counts: List[int],
+    save_path: str,
+    settings_path: Optional[str] = None,
+) -> None:
+    """ Graph all the dataframes in ``dfs`` in a separate subplot. """
+
+    # Settings.
+    if not settings_path:
+        settings_path = SETTINGS_PATH
+    assert os.path.isfile(settings_path)
+    with open(settings_path, "r") as settings_file:
+        settings: Dict[str, Any] = json.load(settings_file)
+
+    # Validate arguments.
+    assert len(dfs) == len(y_labels) == len(column_counts)
+
+    save_path = os.path.abspath(save_path)
+    if not os.path.isdir(os.path.dirname(save_path)):
+        os.makedirs(save_path)
 
     # PLOTTING
 
-    # =================PARAMS=================
-    # =================vvvvvv=================
+    # Entire plot size.
+    plot_height = settings["plot_height"]
+    plot_width = settings["plot_width"]
 
-    # Size of ENTIRE PLOT.
-    plot_height = 7  # 7.25
-    plot_width = 9
-    num_empty_ticks = 0
-
-    # x-axis.
-    xaxis = "index"
-    xaxis = None
-
-    # y-axis.
-    yaxis = None
+    # Column to plot.
+    x_axis: Optional[str] = settings["x_axis"]
+    y_axis: Optional[str] = settings["y_axis"]
+    if x_axis == "":
+        x_axis = None
+    if y_axis == "":
+        y_axis = None
 
     # Text.
-    title_text = filename
-    subtitle_text = ""
-    xlabel = "x"
-    banner_text = "©"
+    title_text = settings["title_text"]
+    subtitle_text = settings["subtitle_text"]
+    banner_text = settings["banner_text"]
 
-    # Set edges of plot in figure (padding).
-    top = 0.85
-    bottom = 0.18  # 0.18 -- old
-    left = 0.12  # 0.1 -- old
-    right = 0.94
+    # Labels.
+    x_label = settings["x_label"]
+
+    # Edges of plot in figure.
+    top = settings["top"]
+    bottom = settings["bottom"]
+    left = settings["left"]
+    right = settings["right"]
 
     # Title sizes.
-    title_pad_x = 0  # + is left, - is right
-    title_pos_y = 0.90
-    subtitle_pos_y = 0.89
-    title_fontsize = 30
-    subtitle_fontsize = 14
+    title_pad_x = settings["title_pad_x"]
+    title_pos_y = settings["title_pos_y"]
+    subtitle_pos_y = settings["subtitle_pos_y"]
+    title_font_size = settings["title_font_size"]
+    subtitle_font_size = settings["subtitle_font_size"]
 
-    # Opacity.
-    text_opacity = 0.75
-    xaxis_opacity = 0.7
+    # Opacities.
+    text_opacity = settings["text_opacity"]
+    x_axis_opacity = settings["x_axis_opacity"]
 
-    # Sizing.
-    tick_label_size = 14
-    legend_size = 14
-    y_axis_label_size = 14
-    x_axis_label_size = 14
-    banner_text_size = 14
+    # Sizes.
+    tick_label_size = settings["tick_label_size"]
+    legend_size = settings["legend_size"]
+    x_axis_label_size = settings["x_axis_label_size"]
+    y_axis_label_size = settings["y_axis_label_size"]
+    banner_text_size = settings["banner_text_size"]
+
+    # Line markers and styles.
+    line_styles = settings["line_styles"]
+    markers = settings["markers"]
 
     # Import font.
     prop = fm.FontProperties(fname="fonts/DecimaMonoPro.ttf")
@@ -65,15 +98,13 @@ def graph(dfs, ylabels, filename, column_counts, save_path):
     prop3 = fm.FontProperties(fname="fonts/Apercu.ttf")
     prop4 = fm.FontProperties(fname="fonts/Apercu.ttf", size=legend_size)
 
-    """
-    ticks_font = matplotlib.font_manager.FontProperties(family='DecimaMonoPro',
-                                                        style='normal',
-                                                        size=12,
-                                                        weight='normal',
-                                                        stretch='normal')
-    """
-    # =================^^^^^^=================
-    # =================PARAMS=================
+    ticks_font = fm.FontProperties(
+        family="DecimaMonoPro",
+        style="normal",
+        size=12,
+        weight="normal",
+        stretch="normal",
+    )
 
     # figure initialization
     fig, axlist = plt.subplots(figsize=(plot_width, plot_height), nrows=len(dfs))
@@ -81,24 +112,24 @@ def graph(dfs, ylabels, filename, column_counts, save_path):
         axlist = [axlist]
     color_index = 0
     column_total = 0
-    NUM_COLORS = sum(column_counts)
+    num_colors = sum(column_counts)
 
     for i, df in enumerate(dfs):
-        ax = axlist[i]
-        plt.sca(ax)
+        axes = axlist[i]
+        plt.sca(axes)
         style.use("fivethirtyeight")
         column_total += column_counts[i]
-        graph, color_index = subplot.create_subplot(
-            ax=ax,
-            xaxis=xaxis,
-            yaxis=yaxis,
+        graphplot, color_index = subplot.create_subplot(
+            axes=axes,
+            x_axis=x_axis,
+            y_axis=y_axis,
             df=df,
-            ylabel=ylabels[i],
+            x_label=x_label,
+            y_label=y_labels[i],
             column_count=column_counts[i],
             column_total=column_total,
             color_index=color_index,
-            NUM_COLORS=NUM_COLORS,
-            xlabel=xlabel,
+            num_colors=num_colors,
             y_axis_label_size=y_axis_label_size,
             x_axis_label_size=x_axis_label_size,
             legend_size=legend_size,
@@ -106,12 +137,14 @@ def graph(dfs, ylabels, filename, column_counts, save_path):
             axis_font=prop3,
             legend_font=prop4,
             text_opacity=text_opacity,
-            xaxis_opacity=xaxis_opacity,
+            x_axis_opacity=x_axis_opacity,
+            line_styles=line_styles,
+            markers=markers,
         )
 
     # add axis labels
     plt.xlabel(
-        xlabel, fontproperties=prop3, fontsize=x_axis_label_size, alpha=text_opacity
+        x_label, fontproperties=prop3, fontsize=x_axis_label_size, alpha=text_opacity
     )
 
     # =========================================================
@@ -139,10 +172,10 @@ def graph(dfs, ylabels, filename, column_counts, save_path):
 
     # banner background height parameters
     pad = 2  # points
-    bb = ax.get_window_extent()
-    h = bb.height / fig.dpi
-    h = h * len(column_counts)
-    height = ((banner.get_size() + 2 * pad) / 72.0) / h
+    bounding_box = axes.get_window_extent()
+    h_pixels = bounding_box.height / fig.dpi
+    h_pixels = h_pixels * len(column_counts)
+    height = ((banner.get_size() + 2 * pad) / 72.0) / h_pixels
     # height = 0.01
 
     # banner background
@@ -156,7 +189,7 @@ def graph(dfs, ylabels, filename, column_counts, save_path):
         facecolor="grey",
         clip_on=False,
     )
-    ax.add_patch(rect)
+    axes.add_patch(rect)
 
     # transform coordinate of left
     display_left_tuple = xfig_trans.transform((left, 0))
@@ -167,25 +200,25 @@ def graph(dfs, ylabels, filename, column_counts, save_path):
     title_shift_x += title_pad_x
 
     # title
-    graph.text(
+    graphplot.text(
         x=display_left - title_shift_x,
         y=title_pos_y,
         transform=yfig_trans,
         s=title_text,
         fontproperties=prop2,
         weight="bold",
-        fontsize=title_fontsize,
+        fontsize=title_font_size,
         alpha=text_opacity,
     )
 
     # subtitle, +1 accounts for font size difference in title and subtitle
-    graph.text(
+    graphplot.text(
         x=display_left - title_shift_x + 1,
         y=subtitle_pos_y,
         transform=yfig_trans,
         s=subtitle_text,
         fontproperties=prop3,
-        fontsize=subtitle_fontsize,
+        fontsize=subtitle_font_size,
         alpha=text_opacity,
     )
 
@@ -200,25 +233,24 @@ def graph(dfs, ylabels, filename, column_counts, save_path):
 
 
 def main(args):
-    GRAPHS_PATH = "graphs/"
+    """ Graph from file. """
     assert os.path.isdir(GRAPHS_PATH)
-    filename = os.path.basename(args.filepath)
-    filename_no_ext = filename.split(".")[0]
-    save_path = os.path.join(GRAPHS_PATH, filename_no_ext + ".svg")
+    basename = os.path.basename(args.filepath)
+    filename = basename.split(".")[0]
+    save_path = os.path.join(GRAPHS_PATH, filename + ".svg")
     if args.format == "csv":
-        dfs, ylabels, column_counts = preprocessing.read_csv(args.filepath)
+        dfs, y_labels, column_counts = preprocessing.read_csv(args.filepath)
     else:
         raise ValueError("Invalid --format format.")
-    graph(dfs, ylabels, filename_no_ext, column_counts, save_path)
+    graph(dfs, y_labels, column_counts, save_path)
     print("Graph saved to:", save_path)
 
 
 if __name__ == "__main__":
-    # TODO: Add an `overwrite` argument which defaults to `True`.
-    parser = argparse.ArgumentParser(description="Matplotlib 538-style plot generator.")
-    parser.add_argument(
+    PARSER = argparse.ArgumentParser(description="Matplotlib 538-style plot generator.")
+    PARSER.add_argument(
         "--filepath", type=str, help="File to parse and graph.", required=True
     )
-    parser.add_argument("--format", type=str, default="csv", help="`csv` or `json`.")
-    args = parser.parse_args()
-    main(args)
+    PARSER.add_argument("--format", type=str, default="csv", help="`csv` or `json`.")
+    ARGS = PARSER.parse_args()
+    main(ARGS)
