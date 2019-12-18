@@ -3,12 +3,13 @@ from typing import List, Tuple, Optional
 import pandas as pd  # type: ignore
 import matplotlib.axes as ax # type: ignore
 import matplotlib.pyplot as plt  # type: ignore
+import matplotlib.font_manager as fm  # type: ignore
 
 # pylint: disable=bad-continuation, too-many-locals, too-many-arguments
 
 
 def create_subplot(
-    axes,
+    axes: ax.Axes,
     x_axis: Optional[str],
     y_axis: Optional[str],
     df: pd.DataFrame,
@@ -22,14 +23,18 @@ def create_subplot(
     x_axis_label_size: int,
     legend_size: int,
     tick_label_size: int,
-    axis_font,
-    legend_font,
+    axis_font: fm.FontProperties,
+    legend_font: fm.FontProperties,
     text_opacity: float,
     x_axis_opacity: float,
     line_styles: List[str],
     markers: List[str],
 ) -> Tuple[ax.Axes, int]:
     """ Creates a graph and returns it along with a color index. """
+
+    # DEBUG
+    print("Type of ``axes``:", type(axes))
+    print("Type of ``axis_font``:", type(axis_font))
 
     graph: ax.Axes = df.plot(x=x_axis, y=y_axis, ax=axes, use_index=True)
     plt.legend(loc="best")
