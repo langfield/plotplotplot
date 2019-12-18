@@ -16,7 +16,6 @@ from plotplotplot import preprocessing, subplot
 # pylint: disable=bad-continuation, too-many-locals, too-many-statements
 
 GRAPHS_PATH = "graphs/"
-SETTINGS_PATH = "settings/settings.json"
 
 
 def graph(
@@ -24,13 +23,12 @@ def graph(
     y_labels: List[str],
     column_counts: List[int],
     save_path: str,
-    settings_path: Optional[str] = None,
+    settings_path: str,
 ) -> None:
     """ Graph all the dataframes in ``dfs`` in a separate subplot. """
 
     # Settings.
-    if not settings_path:
-        settings_path = SETTINGS_PATH
+    print("Reading settings file from '%s'" % settings_path)
     assert os.path.isfile(settings_path)
     with open(settings_path, "r") as settings_file:
         settings: Dict[str, Any] = json.load(settings_file)
@@ -248,6 +246,12 @@ if __name__ == "__main__":
     PARSER = argparse.ArgumentParser(description="Matplotlib 538-style plot generator.")
     PARSER.add_argument(
         "--filepath", type=str, help="File to parse and graph.", required=True
+    )
+    PARSER.add_argument(
+        "--settings-path",
+        type=str,
+        help="Location of valid settings file.",
+        required=True,
     )
     PARSER.add_argument("--format", type=str, default="csv", help="`csv` or `json`.")
     ARGS = PARSER.parse_args()
