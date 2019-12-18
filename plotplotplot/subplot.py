@@ -32,10 +32,6 @@ def create_subplot(
 ) -> Tuple[ax.Axes, int]:
     """ Creates a graph and returns it along with a color index. """
 
-    # DEBUG
-    print("Type of ``axes``:", type(axes))
-    print("Type of ``axis_font``:", type(axis_font))
-
     graph: ax.Axes = df.plot(x=x_axis, y=y_axis, ax=axes, use_index=True)
     plt.legend(loc="best")
 
