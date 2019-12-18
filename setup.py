@@ -8,4 +8,5 @@ setup(
     author_email="",
     packages=["plotplotplot"],  # Same as ``name``.
     install_requires=["matplotlib", "pandas", "numpy"],  # Dependencies.
+    package_data={"plotplotplot": ["fonts/*"]},
 )
