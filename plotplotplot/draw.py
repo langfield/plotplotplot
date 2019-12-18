@@ -89,10 +89,14 @@ def graph(
     markers = settings["markers"]
 
     # Import font.
-    prop = fm.FontProperties(fname="fonts/DecimaMonoPro.ttf")
-    apercu_medium = fm.FontProperties(fname="fonts/apercu_medium_pro.otf")
-    apercu = fm.FontProperties(fname="fonts/Apercu.ttf")
-    apercu_legend = fm.FontProperties(fname="fonts/Apercu.ttf", size=legend_size)
+    pkg_path = os.path.dirname(os.path.abspath(__file__))
+    decima_path = os.path.join(pkg_path, "fonts/DecimaMonoPro.ttf")
+    apercu_medium_path = os.path.join(pkg_path, "fonts/apercu_medium_pro.otf")
+    apercu_path = os.path.join(pkg_path, "fonts/Apercu.ttf")
+    prop = fm.FontProperties(fname=decima_path)
+    apercu_medium = fm.FontProperties(fname=apercu_medium_path)
+    apercu = fm.FontProperties(fname=apercu_path)
+    apercu_legend = fm.FontProperties(fname=apercu_path, size=legend_size)
 
     ticks_font = fm.FontProperties(
         family="DecimaMonoPro",
@@ -238,7 +242,7 @@ def main(args):
         dfs, y_labels, column_counts = preprocessing.read_csv(args.filepath)
     else:
         raise ValueError("Invalid --format format.")
-    graph(dfs, y_labels, column_counts, save_path)
+    graph(dfs, y_labels, column_counts, save_path, args.settings_path)
     print("Graph saved to:", save_path)
 
 
