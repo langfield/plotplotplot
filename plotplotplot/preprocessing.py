@@ -1,13 +1,12 @@
 """ DATA PREPROCESSING. """
 from typing import List, Tuple
-import pandas as pd # type: ignore
+import pandas as pd  # type: ignore
 
 
 def read_csv(file_path: str) -> Tuple[List[pd.DataFrame], List[str], List[int]]:
     """ Read in a csv file to a list of dataframes. """
 
     print("Reading from file:", file_path)
-
     df = pd.read_csv(file_path)
     keys = list(df.columns)
     dfs = []

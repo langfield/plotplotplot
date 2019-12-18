@@ -5,11 +5,11 @@ import json
 import argparse
 from typing import List, Dict, Any, Optional
 
-import pandas as pd # type: ignore
-import matplotlib.pyplot as plt # type: ignore
-import matplotlib.style as style # type: ignore
-import matplotlib.font_manager as fm # type: ignore
-import matplotlib.transforms as transforms # type: ignore
+import pandas as pd  # type: ignore
+import matplotlib.pyplot as plt  # type: ignore
+import matplotlib.style as style  # type: ignore
+import matplotlib.font_manager as fm  # type: ignore
+import matplotlib.transforms as transforms  # type: ignore
 
 from plotplotplot import preprocessing, subplot
 
@@ -41,8 +41,6 @@ def graph(
     save_path = os.path.abspath(save_path)
     if not os.path.isdir(os.path.dirname(save_path)):
         os.makedirs(save_path)
-
-    # PLOTTING
 
     # Entire plot size.
     plot_height = settings["plot_height"]
@@ -94,9 +92,9 @@ def graph(
 
     # Import font.
     prop = fm.FontProperties(fname="fonts/DecimaMonoPro.ttf")
-    prop2 = fm.FontProperties(fname="fonts/apercu_medium_pro.otf")
-    prop3 = fm.FontProperties(fname="fonts/Apercu.ttf")
-    prop4 = fm.FontProperties(fname="fonts/Apercu.ttf", size=legend_size)
+    apercu_medium = fm.FontProperties(fname="fonts/apercu_medium_pro.otf")
+    apercu = fm.FontProperties(fname="fonts/Apercu.ttf")
+    apercu_legend = fm.FontProperties(fname="fonts/Apercu.ttf", size=legend_size)
 
     ticks_font = fm.FontProperties(
         family="DecimaMonoPro",
@@ -106,7 +104,7 @@ def graph(
         stretch="normal",
     )
 
-    # figure initialization
+    # Figure initialization.
     fig, axlist = plt.subplots(figsize=(plot_width, plot_height), nrows=len(dfs))
     if len(dfs) == 1:
         axlist = [axlist]
@@ -134,17 +132,17 @@ def graph(
             x_axis_label_size=x_axis_label_size,
             legend_size=legend_size,
             tick_label_size=tick_label_size,
-            axis_font=prop3,
-            legend_font=prop4,
+            axis_font=apercu,
+            legend_font=apercu_legend,
             text_opacity=text_opacity,
             x_axis_opacity=x_axis_opacity,
             line_styles=line_styles,
             markers=markers,
         )
 
-    # add axis labels
+    # Add axis labels.
     plt.xlabel(
-        x_label, fontproperties=prop3, fontsize=x_axis_label_size, alpha=text_opacity
+        x_label, fontproperties=apercu, fontsize=x_axis_label_size, alpha=text_opacity
     )
 
     # =========================================================
@@ -205,7 +203,7 @@ def graph(
         y=title_pos_y,
         transform=yfig_trans,
         s=title_text,
-        fontproperties=prop2,
+        fontproperties=apercu_medium,
         weight="bold",
         fontsize=title_font_size,
         alpha=text_opacity,
@@ -217,7 +215,7 @@ def graph(
         y=subtitle_pos_y,
         transform=yfig_trans,
         s=subtitle_text,
-        fontproperties=prop3,
+        fontproperties=apercu,
         fontsize=subtitle_font_size,
         alpha=text_opacity,
     )

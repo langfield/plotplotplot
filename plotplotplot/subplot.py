@@ -1,7 +1,7 @@
 """ Generate a single subplot. """
 from typing import List, Tuple, Optional
-import pandas as pd # type: ignore
-import matplotlib.pyplot as plt # type: ignore
+import pandas as pd  # type: ignore
+import matplotlib.pyplot as plt  # type: ignore
 
 # pylint: disable=bad-continuation, too-many-locals, too-many-arguments
 
@@ -27,10 +27,10 @@ def create_subplot(
     x_axis_opacity: float,
     line_styles: List[str],
     markers: List[str],
-) -> Tuple["Graph", "ColorIndex"]:
+) -> Tuple[plt.axes.Axes, int]:
     """ Creates a graph and returns it along with a color index. """
 
-    graph = df.plot(x=x_axis, y=y_axis, ax=axes, use_index=True)
+    graph: plt.axes.Axes = df.plot(x=x_axis, y=y_axis, ax=axes, use_index=True)
     plt.legend(loc="best")
 
     # Hacks to make axes limits visible.
@@ -61,7 +61,7 @@ def create_subplot(
         color_index += 1
         j += 1
 
-    # add axis labels
+    # Add axis labels.
     plt.xlabel(
         x_label,
         fontproperties=axis_font,
@@ -75,27 +75,27 @@ def create_subplot(
         alpha=text_opacity,
     )
 
-    # change font of legend
+    # Change font of legend.
     legend = graph.legend(prop={"size": legend_size})
     plt.setp(legend.texts, fontproperties=legend_font, alpha=text_opacity)
 
-    # set size of tick labels
+    # Set size of tick labels.
     graph.tick_params(axis="both", which="major", labelsize=tick_label_size)
 
-    # set fontname for tick labels
+    # Set fontname for tick labels.
     for tick in graph.get_xticklabels():
         tick.set_fontname("DecimaMonoPro")
     for tick in graph.get_yticklabels():
         tick.set_fontname("DecimaMonoPro")
 
-    # set color for tick labels
+    # Set color for tick labels.
     for tick_label in axes.xaxis.get_ticklabels():
         tick_label.set_color("#303030")
     for tick_label in axes.yaxis.get_ticklabels():
         tick_label.set_color("#303030")
 
-    # create bolded x-axis
-    graph.axhline(y=0, color="black", linewidth=1.3, alpha=x_axis_opacity)  # 0
+    # Create bolded x-axis.
+    graph.axhline(y=0, color="black", linewidth=1.3, alpha=x_axis_opacity)
 
     # Set color of subplots.
     axes.set_facecolor("#F0F0F0")
