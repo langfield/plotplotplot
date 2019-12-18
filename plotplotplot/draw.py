@@ -147,9 +147,7 @@ def graph(
         x_label, fontproperties=apercu, fontsize=x_axis_label_size, alpha=text_opacity
     )
 
-    # =========================================================
-
-    # transforms the x axis to figure fractions, and leaves y axis in pixels
+    # Transforms the x axis to figure fractions, and leaves y axis in pixels.
     xfig_trans = transforms.blended_transform_factory(
         fig.transFigure, transforms.IdentityTransform()
     )
@@ -157,10 +155,10 @@ def graph(
         transforms.IdentityTransform(), fig.transFigure
     )
 
-    # banner positioning
+    # Banner positioning.
     banner_y = math.ceil(banner_text_size * 0.6)
 
-    # banner text
+    # Banner text.
     banner = plt.annotate(
         banner_text,
         xy=(0.01, banner_y * 0.8),
@@ -170,7 +168,7 @@ def graph(
         fontname="DecimaMonoPro",
     )
 
-    # banner background height parameters
+    # Banner background height parameters.
     pad = 2  # points
     bounding_box = axes.get_window_extent()
     h_pixels = bounding_box.height / fig.dpi
@@ -178,7 +176,7 @@ def graph(
     height = ((banner.get_size() + 2 * pad) / 72.0) / h_pixels
     # height = 0.01
 
-    # banner background
+    # Banner background.
     rect = plt.Rectangle(
         (0, 0),
         width=1,
@@ -191,15 +189,15 @@ def graph(
     )
     axes.add_patch(rect)
 
-    # transform coordinate of left
+    # Transform coordinate of left.
     display_left_tuple = xfig_trans.transform((left, 0))
     display_left = display_left_tuple[0]
 
-    # shift title
+    # Shift title.
     title_shift_x = math.floor(tick_label_size * 2.6)
     title_shift_x += title_pad_x
 
-    # title
+    # Title.
     graphplot.text(
         x=display_left - title_shift_x,
         y=title_pos_y,
@@ -211,7 +209,7 @@ def graph(
         alpha=text_opacity,
     )
 
-    # subtitle, +1 accounts for font size difference in title and subtitle
+    # Subtitle, +1 accounts for font size difference in title and subtitle.
     graphplot.text(
         x=display_left - title_shift_x + 1,
         y=subtitle_pos_y,
@@ -222,13 +220,13 @@ def graph(
         alpha=text_opacity,
     )
 
-    # adjust position of subplot in figure
+    # Adjust position of subplot in figure.
     plt.subplots_adjust(top=top)
     plt.subplots_adjust(bottom=bottom)
     plt.subplots_adjust(left=left)
     plt.subplots_adjust(right=right)
 
-    # save to .svg
+    # Save to ``.svg``.
     plt.savefig(save_path)
 
 
