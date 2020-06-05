@@ -1,9 +1,9 @@
 """ Generate a single subplot. """
 from typing import List, Tuple, Optional
-import pandas as pd  # type: ignore
-import matplotlib.axes as ax # type: ignore
-import matplotlib.pyplot as plt  # type: ignore
-import matplotlib.font_manager as fm  # type: ignore
+import pandas as pd
+import matplotlib.axes as ax
+import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
 
 # pylint: disable=bad-continuation, too-many-locals, too-many-arguments
 

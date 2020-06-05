@@ -1,6 +1,6 @@
 """ DATA PREPROCESSING. """
 from typing import List, Tuple
-import pandas as pd  # type: ignore
+import pandas as pd
 
 
 def read_csv(file_path: str) -> Tuple[List[pd.DataFrame], List[str], List[int]]:

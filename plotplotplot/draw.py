@@ -5,11 +5,11 @@ import json
 import argparse
 from typing import List, Dict, Any, Optional
 
-import pandas as pd  # type: ignore
-import matplotlib.pyplot as plt  # type: ignore
-import matplotlib.style as style  # type: ignore
-import matplotlib.font_manager as fm  # type: ignore
-import matplotlib.transforms as transforms  # type: ignore
+import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib.style as style
+import matplotlib.font_manager as fm
+import matplotlib.transforms as transforms
 
 from plotplotplot import preprocessing, subplot
 
@@ -20,8 +20,10 @@ GRAPHS_PATH = "graphs/"
 
 def graph(
     dfs: List[pd.DataFrame],
+    titles: List[str],
     y_labels: List[str],
     column_counts: List[int],
+    ncols: int,
     save_path: str,
     settings_path: str,
 ) -> None:
@@ -34,7 +36,7 @@ def graph(
         settings: Dict[str, Any] = json.load(settings_file)
 
     # Validate arguments.
-    assert len(dfs) == len(y_labels) == len(column_counts)
+    assert len(dfs) == len(titles) == len(y_labels) == len(column_counts)
 
     save_path = os.path.abspath(save_path)
     if not os.path.isdir(os.path.dirname(save_path)):
@@ -107,7 +109,10 @@ def graph(
     )
 
     # Figure initialization.
-    fig, axlist = plt.subplots(figsize=(plot_width, plot_height), nrows=len(dfs))
+    nrows = math.ceil(len(dfs) / ncols)
+    fig, axlist = plt.subplots(
+        figsize=(plot_width, plot_height), nrows=nrows, ncols=ncols
+    )
     if len(dfs) == 1:
         axlist = [axlist]
     color_index = 0
@@ -116,6 +121,7 @@ def graph(
 
     for i, df in enumerate(dfs):
         axes = axlist[i]
+        axes.title.set_text(titles[i])
         plt.sca(axes)
         style.use("fivethirtyeight")
         column_total += column_counts[i]
@@ -231,7 +237,7 @@ def graph(
     print("Plot saved to '%s'" % save_path)
 
 
-def main(args):
+def main(args: argparse.Namespace) -> None:
     """ Graph from file. """
     assert os.path.isdir(GRAPHS_PATH)
     basename = os.path.basename(args.filepath)
@@ -241,7 +247,7 @@ def main(args):
         dfs, y_labels, column_counts = preprocessing.read_csv(args.filepath)
     else:
         raise ValueError("Invalid --format format.")
-    graph(dfs, y_labels, column_counts, save_path, args.settings_path)
+    graph(dfs, y_labels, y_labels, column_counts, 1, save_path, args.settings_path)
     print("Graph saved to:", save_path)
 
 
