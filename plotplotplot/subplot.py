@@ -47,7 +47,7 @@ def create_subplot(
     color_map = plt.get_cmap("magma")  # "gist_rainbow"
 
     j = 0
-    while color_index < column_total:
+    while color_index < num_colors:
         plt.gca().get_lines()[j].set_color(
             color_map(
                 color_index // len(line_styles) * float(len(line_styles)) / num_colors

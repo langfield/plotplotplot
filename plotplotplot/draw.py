@@ -110,11 +110,19 @@ def graph(
 
     # Figure initialization.
     nrows = math.ceil(len(dfs) / ncols)
-    fig, axlist = plt.subplots(
+    fig, ax = plt.subplots(
         figsize=(plot_width, plot_height), nrows=nrows, ncols=ncols
     )
+    if hasattr(ax, "shape") and len(ax.shape) > 1:
+        ax = ax.flatten()
+    axlist = ax
     if len(dfs) == 1:
         axlist = [axlist]
+
+    # These were used to make colors distinct over all subplots.
+    # To revert to distinct colors, set:
+    # ``color_index=color_index``,
+    # ``num_colors=num_colors``.
     color_index = 0
     column_total = 0
     num_colors = sum(column_counts)
@@ -134,8 +142,8 @@ def graph(
             y_label=y_labels[i],
             column_count=column_counts[i],
             column_total=column_total,
-            color_index=color_index,
-            num_colors=num_colors,
+            color_index=0,
+            num_colors=column_counts[i],
             y_axis_label_size=y_axis_label_size,
             x_axis_label_size=x_axis_label_size,
             legend_size=legend_size,
