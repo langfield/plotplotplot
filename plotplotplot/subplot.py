@@ -30,7 +30,7 @@ def create_subplot(
     line_styles: List[str],
     markers: List[str],
 ) -> Tuple[ax.Axes, int]:
-    """ Creates a graph and returns it along with a color index. """
+    """Creates a graph and returns it along with a color index."""
 
     graph: ax.Axes = df.plot(x=x_axis, y=y_axis, ax=axes, use_index=True)
     plt.legend(loc="best")

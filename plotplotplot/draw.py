@@ -27,7 +27,7 @@ def graph(
     save_path: str,
     settings_path: str,
 ) -> None:
-    """ Graph all the dataframes in ``dfs`` in a separate subplot. """
+    """Graph all the dataframes in ``dfs`` in a separate subplot."""
 
     # Settings.
     print("Reading settings file from '%s'" % settings_path)
@@ -110,9 +110,7 @@ def graph(
 
     # Figure initialization.
     nrows = math.ceil(len(dfs) / ncols)
-    fig, ax = plt.subplots(
-        figsize=(plot_width, plot_height), nrows=nrows, ncols=ncols
-    )
+    fig, ax = plt.subplots(figsize=(plot_width, plot_height), nrows=nrows, ncols=ncols)
     if hasattr(ax, "shape") and len(ax.shape) > 1:
         ax = ax.flatten()
     axlist = ax
@@ -246,7 +244,7 @@ def graph(
 
 
 def main(args: argparse.Namespace) -> None:
-    """ Graph from file. """
+    """Graph from file."""
     assert os.path.isdir(GRAPHS_PATH)
     basename = os.path.basename(args.filepath)
     filename = basename.split(".")[0]

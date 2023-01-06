@@ -4,7 +4,7 @@ import pandas as pd
 
 
 def read_csv(file_path: str) -> Tuple[List[pd.DataFrame], List[str], List[int]]:
-    """ Read in a csv file to a list of dataframes. """
+    """Read in a csv file to a list of dataframes."""
 
     print("Reading from file:", file_path)
     df = pd.read_csv(file_path)
